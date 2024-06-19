@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Demo</title>
+</head>
+<body>
+    <p>Session Id: {{ id }}</p>
+
+    <label for="demo-progress-bar"> Demo Progress Bar: </label>
+    <progress id="demo-progress-bar" value="0" max="100"> 0% </progress>
+
+    <script>
+        const session_id = {{ id }};
+        const progressBar = document.getElementById('demo-progress-bar');
+        const eventSource = new EventSource(`/progress?session_id=${session_id}`);
+
+        eventSource.addEventListener("progress", (event) => {
+            const progress = JSON.parse(event.data).progress;
+            progressBar.value = progress;
+        });
+    </script>
+</body>
+</html>
